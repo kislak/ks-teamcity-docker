@@ -1,0 +1,40 @@
+version: '2'
+services:
+  teamcity_server:
+    restart: unless-stopped
+    build: 
+      teamcity_server
+    container_name:
+      teamcity_server
+    ports:
+      - "8111:8111" 
+    volumes:
+      - ./mnt/var/lib/teamcity:/var/lib/teamcity
+    environment:
+      TEAMCITY_SERVER_MEM_OPTS: -Xmx1024m
+    links:
+      - "teamcity_pg:teamcity_pg"
+  teamcity_pg:
+    restart: unless-stopped
+    build: 
+      teamcity_pg
+    container_name:
+      teamcity_pg
+    ports:
+      - "5432"
+    environment:
+      - POSTGRES_PASSWORD
+    volumes:
+      - ./mnt/var/lib/postgresql/data:/var/lib/postgresql/data
+  teamcity_agent:
+    restart: unless-stopped
+    build: 
+      teamcity_agent
+    container_name:
+      teamcity_agent
+    links:
+      - "teamcity_server:teamcity_server"
+    environment:
+      SERVER_URL: teamcity_server:8111
+    volumes:
+      - ./mnt/data/teamcity_agent/conf:/data/teamcity_agent/conf

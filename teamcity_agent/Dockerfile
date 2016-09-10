@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y git
 ## Default Packages
 RUN apt-get install -y nano wget links curl rsync bc git git-core apt-transport-https libxml2 libxml2-dev libcurl4-openssl-dev openssl sqlite3 libsqlite3-dev
 RUN apt-get install -y gawk libreadline6-dev libyaml-dev autoconf libgdbm-dev libncurses5-dev automake libtool bison libffi-dev
+RUN apt-get install -y build-essential
 
 ## Ruby
 RUN command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
